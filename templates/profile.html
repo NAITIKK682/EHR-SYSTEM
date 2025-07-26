@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile - MediAssist EHR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #f4f9ff);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #0d6efd;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      background-color: #0d6efd;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #084bcc;
+    }
+
+    .row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .row .form-group {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Fill Your Profile</h2>
+  <form action="{{ url_for('save_profile') }}" method="POST" enctype="multipart/form-data">
+
+    <div class="form-group">
+      <label>Full Name:</label>
+      <input type="text" name="name" required>
+    </div>
+
+    <div class="form-group">
+      <label>Email:</label>
+      <input type="email" name="email" required>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>Phone:</label>
+        <input type="text" name="phone" required>
+      </div>
+      <div class="form-group">
+        <label>DOB:</label>
+        <input type="date" name="dob" required>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>Gender:</label>
+        <select name="gender" required>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Blood Group:</label>
+        <input type="text" name="blood_group">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>Height (cm):</label>
+        <input type="text" name="height">
+      </div>
+      <div class="form-group">
+        <label>Weight (kg):</label>
+        <input type="text" name="weight">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Address:</label>
+      <textarea name="address" rows="2" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Emergency Contact:</label>
+      <input type="text" name="emergency_contact">
+    </div>
+
+    <div class="form-group">
+      <label>Known Allergies:</label>
+      <input type="text" name="allergies">
+    </div>
+
+    <div class="form-group">
+      <label>Ongoing Conditions / Treatment:</label>
+      <input type="text" name="conditions">
+    </div>
+
+    <div class="form-group">
+      <label>Upload Medical Report:</label>
+      <input type="file" name="report">
+    </div>
+
+    <button type="submit">Submit Profile</button>
+  </form>
+</div>
+
+</body>
+</html>

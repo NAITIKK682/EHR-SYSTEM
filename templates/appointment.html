@@ -1,0 +1,241 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>Appointment Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .doctor-info {
+            padding: 20px;
+            background: #fff;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .success-message {
+            display: none;
+            background: #dff0d8;
+            color: #3c763d;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <h1>Book Appointment</h1>
+    
+    <div id="doctor-display" class="doctor-info">
+        <!-- Doctor info will appear here -->
+    </div>
+    
+    <form id="appointmentForm">
+        <div class="form-group">
+            <label for="patientName">Full Name</label>
+            <input type="text" id="patientName" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+            <label for="appointmentDate">Appointment Date</label>
+            <input type="date" id="appointmentDate" required>
+        </div>
+        <div class="form-group">
+            <label for="patientEmail">Email</label>
+            <input type="email" id="patientEmail" placeholder="Your Email" required>
+        </div>
+        <div class="form-group">
+            <label for="patientPhone">Phone Number</label>
+            <input type="tel" id="patientPhone" placeholder="Your Phone Number" required>
+        </div>
+        <div class="form-group">
+            <label for="appointmentTime">Preferred Time</label>
+            <select id="appointmentTime" required>
+                <option value="">Select a time slot</option>
+                <option value="09:00-10:00">09:00 AM - 10:00 AM</option>
+                <option value="10:00-11:00">10:00 AM - 11:00 AM</option>
+                <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
+                <option value="13:00-14:00">01:00 PM - 02:00 PM</option>
+                <option value="14:00-15:00">02:00 PM - 03:00 PM</option>
+                <option value="15:00-16:00">03:00 PM - 04:00 PM</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="patientNotes">Additional Notes</label>
+            <input type="text" id="patientNotes" placeholder="Any special requirements">
+        </div>
+        <button type="submit">Confirm Appointment</button>
+    </form>
+    
+    <div id="successMessage" class="success-message">
+        <h2>Appointment Booked Successfully!</h2>
+        <p>Your appointment details have been submitted. A confirmation has been saved to your device.</p>
+        <p>You will receive a confirmation email shortly.</p>
+    </div>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+        const urlParams = new URLSearchParams(window.location.search);
+        const doctorName = urlParams.get('doctor');
+        
+        function displayDoctorInfo() {
+            if (doctorName) {
+                document.getElementById('doctor-display').innerHTML = `
+                    <h2>Dr. ${decodeURIComponent(doctorName)}</h2>
+                    <p>Specialization: ${getSpecialization(decodeURIComponent(doctorName))}</p>
+                    <p>Appointment booking form for Dr. ${decodeURIComponent(doctorName)}</p>
+                `;
+            } else {
+                window.location.href = '/';
+            }
+        }
+
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const patientName = document.getElementById('patientName').value;
+            const appointmentDate = document.getElementById('appointmentDate').value;
+            const patientEmail = document.getElementById('patientEmail').value;
+            const patientPhone = document.getElementById('patientPhone').value;
+            const appointmentTime = document.getElementById('appointmentTime').value;
+            const patientNotes = document.getElementById('patientNotes').value;
+            
+            if (!patientName || !appointmentDate || !patientEmail || !patientPhone || !appointmentTime) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            const appointment = {
+                doctor: decodeURIComponent(doctorName),
+                patientName,
+                appointmentDate,
+                patientEmail,
+                patientPhone,
+                appointmentTime,
+                patientNotes: patientNotes || 'None',
+                bookingDate: new Date().toLocaleString(),
+                appointmentId: generateAppointmentId()
+            };
+            
+            generateAndSavePDF(appointment);
+            document.getElementById('appointmentForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        });
+
+        function generateAndSavePDF(appointment) {
+            const doc = new jsPDF();
+            doc.setFontSize(20);
+            doc.setTextColor(40, 40, 150);
+            doc.text('Appointment Confirmation', 105, 20, { align: 'center' });
+            doc.setDrawColor(200, 200, 200);
+            doc.line(20, 25, 190, 25);
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            let y = 40;
+            const addDetail = (label, value) => {
+                doc.setFont(undefined, 'bold');
+                doc.text(`${label}:`, 20, y);
+                doc.setFont(undefined, 'normal');
+                doc.text(value, 60, y);
+                y += 10;
+            };
+            addDetail('Appointment ID', appointment.appointmentId);
+            addDetail('Booking Date', appointment.bookingDate);
+            addDetail('Doctor', 'Dr. ' + appointment.doctor);
+            addDetail('Specialization', getSpecialization(appointment.doctor));
+            addDetail('Patient Name', appointment.patientName);
+            addDetail('Appointment Date', formatDate(appointment.appointmentDate));
+            addDetail('Appointment Time', appointment.appointmentTime);
+            addDetail('Patient Email', appointment.patientEmail);
+            addDetail('Patient Phone', appointment.patientPhone);
+            addDetail('Additional Notes', appointment.patientNotes);
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text('Thank you for choosing our service. Please arrive 10 minutes before your appointment.', 105, 280, { align: 'center' });
+
+            const fileName = `Appointment_${appointment.appointmentId}.pdf`;
+            doc.save(fileName);
+
+            // ✅ Send PDF to backend to save in static/appointment
+            const pdfBlob = doc.output('blob');
+            const formData = new FormData();
+            formData.append('pdf', pdfBlob, fileName);
+
+            fetch('/save_appointment_pdf', {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json())
+              .then(data => console.log('PDF saved on server:', data))
+              .catch(err => console.error('Error saving PDF:', err));
+        }
+
+        function generateAppointmentId() {
+            return 'APT-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+        }
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        function getSpecialization(doctorName) {
+            const specializations = {
+                "Smith": "Cardiology",
+                "Johnson": "Neurology",
+                "Williams": "Pediatrics",
+                "Brown": "Orthopedics",
+                "Jones": "Dermatology",
+                "Patel": "General Medicine",
+                "Kumar": "Dentistry",
+                "Sharma": "Ophthalmology"
+            };
+            const lastName = doctorName.split(" ")[0];
+            return specializations[lastName] || "General Practitioner";
+        }
+        displayDoctorInfo();
+    </script>
+</body>
+</html>

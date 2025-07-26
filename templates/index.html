@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediAssist - Electronic Health Records</title>
+    <!-- Other meta tags -->
+    <link rel="stylesheet" href="static/css/darkmode.css">
+    <link rel="stylesheet" href="static/css/reviews.css">
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    
+    <!-- Header Section -->
+<header>
+  <div class="container">
+    <div class="logo">
+      <i class="fas fa-heartbeat"></i>
+      <h1>MediAssist EHR</h1>
+    </div>
+
+
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#diseases"><i class="fas fa-disease"></i> Diseases</a></li>
+        <li><a href="#chatbot"><i class="fas fa-robot"></i> AI Assistant</a></li>
+        <li><a href="#doctors"><i class="fas fa-user-md"></i> Doctors</a></li>
+        <li><a href="#records"><i class="fas fa-file-medical"></i> Records</a></li>
+        <li><a href="/profile"><i class="fas fa-user"></i> User Info</a></li>
+        <li><a href="/login"><i class="fas fa-right-to-bracket"></i> Login</a></li>
+        <li><a href="/signup"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+      </ul>
+    </nav>
+
+      <!-- Add this dark mode toggle container -->
+    <div class="theme-toggle-container">
+      <label class="theme-toggle">
+        <input type="checkbox" id="theme-toggle-checkbox">
+        <span class="theme-toggle-slider"></span>
+      </label>
+      <span class="theme-toggle-label">Dark Mode</span>
+    </div>
+
+  </div>
+</header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Your Health, Our Priority</h1>
+                <p>MediAssist provides AI-powered health insights, connects you with specialists, and manages your medical records securely.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-large">Get Started</button>
+                    <button class="btn btn-outline btn-large">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="static/images/hero-image.png" alt="Healthcare Illustration">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Our Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-disease"></i>
+                    </div>
+                    <h3>Disease Information</h3>
+                    <p>Access detailed information about 50+ common diseases, symptoms, causes, and treatments.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Health Assistant</h3>
+                    <p>Interact with our intelligent chatbot to understand symptoms and get health guidance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Doctor Finder</h3>
+                    <p>Locate nearby specialists based on your health concerns with Google Maps integration.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <h3>Secure Records</h3>
+                    <p>Store and manage your medical records securely with end-to-end encryption.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Teleconsultations</h3>
+                    <p>Connect with doctors through secure video calls for remote consultations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Health Reminders</h3>
+                    <p>Receive personalized medication and appointment reminders to stay healthy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diseases Section -->
+    <section id="diseases" class="diseases">
+        <div class="container">
+            <h2 class="section-title">Common Diseases Information</h2>
+            <div class="search-container">
+                <input type="text" id="disease-search" placeholder="Search for diseases...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="diseases-grid" id="diseases-container">
+                <!-- Disease cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+ <!-- Chatbot Section (Update this in your existing index.html) -->
+<section id="chatbot" class="chatbot-section">
+  <div class="container">
+    <h2 class="section-title">MediBot AI Assistant</h2>
+    <div class="chatbot-card">
+      
+      <!-- Header -->
+      <div class="chat-header">
+        <div class="bot-avatar">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="bot-info">
+          <h3>MediBot</h3>
+          <p>AI Health Assistant</p>
+        </div>
+        <div class="chat-controls">
+          <button id="clear-chat"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+
+      <!-- Chat Messages -->
+      <div id="chat-messages" class="chat-messages"></div>
+
+      <!-- Upload Section -->
+      <div class="upload-container">
+        <label for="image-upload" class="upload-btn">
+          <i class="fas fa-image"></i> Upload Medical Image
+          <input type="file" id="image-upload" accept="image/*" style="display:none;">
+        </label>
+        <div id="file-name" class="file-name-display"></div>
+      </div>
+
+      <!-- Input Section -->
+      <div class="text-input-group">
+        <input type="text" id="user-input" placeholder="Describe your symptoms...">
+        <button id="send-btn" class="send-btn">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+
+      
+    </div>
+  </div>
+</section>
+
+
+    <!-- Doctors Section --> 
+<section id="doctors" class="doctors">
+    <div class="container">
+        <h2 class="section-title">Find Healthcare Providers</h2>
+
+        <!-- Image Added -->
+        <div class="doctor-image" style="text-align: center; margin-bottom: 20px;">
+            <img src="static/images/doctor-team.jpg" alt="Healthcare Providers" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        </div>
+        
+
+        <div class="doctors-grid" id="doctors-container"></div>
+    </div>
+</section>
+
+
+    <!-- Records Section -->
+<section id="records" class="records">
+  <div class="container">
+    <h2 class="section-title">Your Medical Records</h2>
+    <div class="records-container">
+
+      <!-- Lab Reports -->
+      <div class="record-card">
+        <div class="record-header">
+          <h3>Lab Reports</h3>
+        </div>
+        <div class="record-content">
+          <form method="POST" action="/upload/lab-reports" enctype="multipart/form-data">
+            <input type="file" name="labReport" required>
+            <button type="submit" class="btn btn-small btn-primary">Upload</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Vaccination Records -->
+      <div class="record-card">
+        <div class="record-header">
+          <h3>Vaccination Records</h3>
+        </div>
+        <div class="record-content">
+          <form method="POST" action="/upload/vaccination" enctype="multipart/form-data">
+            <input type="file" name="vaccinationReport" required>
+            <button type="submit" class="btn btn-small btn-primary">Upload</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Prescriptions -->
+      <div class="record-card">
+        <div class="record-header">
+          <h3>Prescriptions</h3>
+        </div>
+        <div class="record-content">
+          <form method="POST" action="/upload/prescription" enctype="multipart/form-data">
+            <input type="file" name="prescription" required>
+            <button type="submit" class="btn btn-small btn-primary">Upload</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Medical History -->
+      <div class="record-card">
+        <div class="record-header">
+          <h3>Medical History</h3>
+        </div>
+        <div class="record-content">
+          <form method="POST" action="/add/medical-history">
+            <textarea name="historyText" placeholder="Describe your past conditions..." required></textarea>
+            <button type="submit" class="btn btn-small btn-primary">Add Entry</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+    <!-- Reviews Section -->
+    <section class="reviews">
+        <div class="container">
+            <h2 class="section-title">What Our Users Say</h2>
+            <div class="reviews-container">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah Johnson">
+                        </div>
+                        <div class="reviewer-info">
+                            <h3>Sarah Johnson</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>"MediAssist has transformed how I manage my family's health records. The AI assistant helped identify my son's symptoms accurately and connected us with the perfect pediatrician. Highly recommended!"</p>
+                    </div>
+                    <div class="review-date">March 15, 2023</div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-avatar">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="David Chen">
+                        </div>
+                        <div class="reviewer-info">
+                            <h3>David Chen</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>"As someone with chronic conditions, having all my medical records in one secure place is invaluable. The doctor finder feature saved me hours of research when I moved to a new city."</p>
+                    </div>
+                    <div class="review-date">April 2, 2023</div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Priya Patel">
+                        </div>
+                        <div class="reviewer-info">
+                            <h3>Priya Patel</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>"The medication reminders have been a lifesaver for my elderly parents. The interface is so intuitive that even my tech-challenged mother can use it without help!"</p>
+                    </div>
+                    <div class="review-date">May 10, 2023</div>
+                </div>
+            </div>
+
+            <div class="review-form-container">
+                <h3>Share Your Experience</h3>
+                <form id="review-form" class="review-form">
+                    <div class="form-group">
+                        <input type="text" id="reviewer-name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="reviewer-email" placeholder="Your Email">
+                    </div>
+                    <div class="form-group rating-input">
+                        <span>Rating:</span>
+                        <div class="stars">
+                            <i class="far fa-star" data-rating="1"></i>
+                            <i class="far fa-star" data-rating="2"></i>
+                            <i class="far fa-star" data-rating="3"></i>
+                            <i class="far fa-star" data-rating="4"></i>
+                            <i class="far fa-star" data-rating="5"></i>
+                        </div>
+                        <input type="hidden" id="rating-value" value="0">
+                    </div>
+                    <div class="form-group">
+                        <textarea id="review-text" placeholder="Your review..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+   
+  
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <div class="developer-profile">
+                    <img src="/static/images/developerimage.jpg" alt="Naitik Kushwaha" class="developer-img">
+                    <div class="developer-details">
+                        <h4>Naitik Kushwaha</h4>
+                        <p>Full Stack Developer</p>
+                    </div>
+                </div>
+                <div class="footer-logo">
+                    <h3>MediAssist EHR</h3>
+                    <p>Your trusted partner for digital health management.</p>
+                </div>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/177u2Be73S/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.threads.com/@mr_naitik_maurya" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/mr_naitik_maurya?igsh=MTk2ZGRpdHZkdnNtcA==" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/naitik-kushwaha?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://github.com/NAITIKK682" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-section links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#diseases"><i class="fas fa-chevron-right"></i> Diseases</a></li>
+                    <li><a href="#chatbot"><i class="fas fa-chevron-right"></i> AI Assistant</a></li>
+                    <li><a href="#doctors"><i class="fas fa-chevron-right"></i> Doctors</a></li>
+                    <li><a href="#records"><i class="fas fa-chevron-right"></i> Records</a></li>
+                </ul>
+            </div>
+            <div class="footer-section contact">
+                <h4>Contact Us</h4>
+                <div class="contact-info">
+                    <p><i class="fas fa-map-marker-alt"></i> <span>123 Health Street, Medical City</span></p>
+                    <p><i class="fas fa-phone"></i> <span>+91 8948866980</span></p>
+                    <p><i class="fas fa-envelope"></i> <span>naitikk682@gmail.com</span></p>
+                </div>
+                <div class="newsletter">
+                    <h5>Subscribe to Newsletter</h5>
+                    <form>
+                        <input type="email" placeholder="Your Email">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 MediAssist EHR System. All rights reserved. | Designed with <i class="fas fa-heart"></i> by Naitik Kushwaha</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    /* Footer Styles */
+    footer {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: #fff;
+        padding: 60px 0 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .footer-section {
+        flex: 1;
+        min-width: 250px;
+        padding: 0 20px;
+        margin-bottom: 40px;
+    }
+    
+    .footer-section.about {
+        flex: 1.5;
+    }
+    
+    .developer-profile {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+    }
+    
+    .developer-img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #4fc3f7;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .developer-img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .developer-details {
+        margin-left: 15px;
+    }
+    
+    .developer-details h4 {
+        margin: 0;
+        color: #4fc3f7;
+        font-size: 1.2rem;
+    }
+    
+    .developer-details p {
+        margin: 5px 0 0;
+        color: #b3e5fc;
+        font-size: 0.9rem;
+    }
+    
+    .footer-logo h3 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        color: #fff;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .footer-logo h3:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -5px;
+        width: 50px;
+        height: 2px;
+        background: #4fc3f7;
+    }
+    
+    .footer-logo p {
+        color: #b3e5fc;
+        line-height: 1.6;
+    }
+    
+    .social-icons {
+        margin-top: 20px;
+        display: flex;
+        gap: 15px;
+    }
+    
+    .social-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 18px;
+        transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        background: #4fc3f7;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(79, 195, 247, 0.4);
+    }
+    
+    .footer-section h4 {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+        color: #4fc3f7;
+        position: relative;
+    }
+    
+    .footer-section h4:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -8px;
+        width: 40px;
+        height: 2px;
+        background: #4fc3f7;
+    }
+    
+    .footer-section.links ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .footer-section.links li {
+        margin-bottom: 10px;
+    }
+    
+    .footer-section.links a {
+        color: #b3e5fc;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+    
+    .footer-section.links a:hover {
+        color: #4fc3f7;
+        padding-left: 5px;
+    }
+    
+    .footer-section.links i {
+        margin-right: 8px;
+        font-size: 12px;
+    }
+    
+    .contact-info p {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        color: #b3e5fc;
+    }
+    
+    .contact-info i {
+        margin-right: 10px;
+        color: #4fc3f7;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .newsletter h5 {
+        color: #fff;
+        margin: 25px 0 15px;
+    }
+    
+    .newsletter form {
+        display: flex;
+    }
+    
+    .newsletter input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 5px 0 0 5px;
+        outline: none;
+    }
+    
+    .newsletter button {
+        background: #4fc3f7;
+        color: #fff;
+        border: none;
+        padding: 0 15px;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .newsletter button:hover {
+        background: #0288d1;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        padding: 20px 0;
+        background: rgba(0, 0, 0, 0.2);
+        margin-top: 40px;
+    }
+    
+    .footer-bottom p {
+        margin: 0;
+        color: #b3e5fc;
+        font-size: 0.9rem;
+    }
+    
+    .footer-bottom i {
+        color: #f44336;
+    }
+    
+    @media (max-width: 768px) {
+        .footer-section {
+            flex: 100%;
+            text-align: center;
+        }
+        
+        .developer-profile {
+            justify-content: center;
+            text-align: left;
+        }
+        
+        .social-icons {
+            justify-content: center;
+        }
+        
+        .footer-section h4:after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+</style>
+
+    <!-- Scripts -->
+    <script src="static/js/script.js"></script>
+    <script src="static/js/chatbot.js"></script>
+    <script src="static/js/diseases.js"></script>
+    <script src="static/js/doctors.js"></script>
+    <script src="static/js/darkmode.js"></script>
+    <script src="static/js/reviews.js"></script>
+
+
+</body>
+</html>

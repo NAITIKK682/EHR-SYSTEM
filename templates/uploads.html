@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Success</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .message-box {
+      background: white;
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transform: rotateX(5deg) rotateY(5deg);
+      transition: transform 0.4s ease;
+    }
+
+    .message-box:hover {
+      transform: rotateX(0deg) rotateY(0deg) scale(1.05);
+    }
+
+    .message-box h1 {
+      font-size: 28px;
+      color: #2e7d32;
+      text-shadow: 1px 1px 2px #b9f6ca;
+    }
+
+    .checkmark {
+      font-size: 50px;
+      color: #4caf50;
+      animation: pop 0.5s ease-in-out;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="message-box">
+    <div class="checkmark">✅</div>
+    <h1>Your Medical Report is Submitted Successfully</h1>
+  </div>
+
+  <!-- Local Success Sound -->
+  <audio id="successSound" autoplay>
+    <source src="{{ url_for('static', filename='sounds/success.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+</body>
+</html>
